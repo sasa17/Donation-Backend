@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Cart, CartItem,Menu,Restaurant
+from .models import Restaurant, Menu, Cart, CartItem
 
-
+admin.site.register(Restaurant)
+admin.site.register(Menu)
 admin.site.register(Cart)
 admin.site.register(CartItem)
-admin.site.register(Menu)
-admin.site.register(Restaurant)
+
