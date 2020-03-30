@@ -20,8 +20,6 @@ class Restaurant(models.Model):
     def __str__(self):
         return str(self.name)
 
-    def __str__(self):
-        return str(self.name)
 
 class Menu(models.Model):
     name = models.CharField(max_length=250)
@@ -36,8 +34,6 @@ class Menu(models.Model):
     def __str__(self):
         return str(self.name)
 
-    def __str__(self):
-        return str(self.name)
 
 
 class CartItem(models.Model):
