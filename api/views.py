@@ -1,9 +1,10 @@
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, CreateAPIView,RetrieveUpdateAPIView,DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 
-from .serializers import UserCreateSerializer, CartSerializer, CartItemCreateSerializer, ProfileSerializer,CartItemSerializer,CartUpdateSerializer,RestaurantSerializer
+from .serializers import UserCreateSerializer, CartSerializer, CartItemCreateSerializer, ProfileSerializer,CartItemSerializer,CartUpdateSerializer,RestaurantSerializer,RestaurantDetailSerializer
 from .models import CartItem, Cart, Restaurant
 from .permissions import IsCartOwner
 
@@ -67,3 +68,8 @@ class RestaurantList(ListAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
 
+class RestaurantDetail(RetrieveAPIView):
+	queryset = Restaurant.objects.all()
+	serializer_class = RestaurantDetailSerializer
+	lookup_field = 'id'
+	lookup_url_kwarg = 'restaurant_id'
