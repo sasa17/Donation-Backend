@@ -15,6 +15,10 @@ class ProfileDetails(RetrieveAPIView):
     def get_object(self):
         return self.request.user.profile
 
+class RestaurantList(ListAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializer
+
 # class CartDetail(RetrieveAPIView):
 #     serializer_class = CartSerializer
 

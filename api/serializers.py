@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Profile
+from .models import Profile,Restaurant,
 # from datetime import date
 
 
@@ -39,6 +39,11 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['user']
+
+class RestaurantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = ['name', 'location', 'description', 'image','id']
 
 
 # class CartItemSerializer(serializers.ModelSerializer):
