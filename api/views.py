@@ -74,6 +74,6 @@ class RestaurantDetail(RetrieveAPIView):
 	serializer_class = RestaurantDetailSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'restaurant_id'
-    permission_classes = [IsAuthenticated]
+	permission_classes = [IsAuthenticated]
 
-    
+
