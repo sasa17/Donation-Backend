@@ -75,3 +75,5 @@ class RestaurantDetail(RetrieveAPIView):
 	lookup_field = 'id'
 	lookup_url_kwarg = 'restaurant_id'
     permission_classes = [IsAuthenticated]
+
+    
