@@ -26,11 +26,11 @@ urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='login'),
     path('register/', UserCreateAPIView.as_view(), name='register'),
     path('profile/', views.ProfileDetails.as_view(), name="profile-details"),
-    # path('cart/', views.CartDetail.as_view(), name="cart"),
-    # path('cart/item/', views.CartItem.as_view(), name="cart_item"),
-    # path('cart/<int:cartitem_id>/update/', views.UpdateCart.as_view(), name="update-cartitem"),
-    # path('cart/<int:cartitem_id>/delete/', views.DeleteCartItem.as_view(), name="delete-cartitem"),
-    # path('checkout/', views.Checkout.as_view(), name="checkout"),
+    path('cart/', views.CartDetail.as_view(), name="cart"),
+    path('cart/item/', views.CartItem.as_view(), name="cart_item"),
+    path('cart/<int:cartitem_id>/update/', views.UpdateCart.as_view(), name="update-cartitem"),
+    path('cart/<int:cartitem_id>/delete/', views.DeleteCartItem.as_view(), name="delete-cartitem"),
+    path('checkout/', views.Checkout.as_view(), name="checkout"),
 ]
 
 # if settings.DEBUG:
