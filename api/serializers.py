@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Profile
-# from datetime import date
+from datetime import date
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -41,38 +41,38 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['user']
 
 
-# class CartItemSerializer(serializers.ModelSerializer):
-#     item = serializers.SlugRelatedField(slug_field='name', read_only=True)
-#     item_price = serializers.SerializerMethodField()
+class CartItemSerializer(serializers.ModelSerializer):
+    menu_item = serializers.SlugRelatedField(slug_field='name', read_only=True)
+    item_price = serializers.SerializerMethodField()
 
-#     class Meta:
-#         model = CartItem
-#         fields = ['item', 'quantity','item_price','id']
+    class Meta:
+        model = CartItem
+        fields = ['menu_item', 'quantity','item_price','id']
 
-#     def get_item_price(self, obj):
-#         return obj.item.price*obj.quantity
-
-
-# class CartSerializer(serializers.ModelSerializer):
-#     user = UserSerializer()
-#     cart_item = serializers.SerializerMethodField()
-
-#     class Meta:
-#         model = Cart
-#         fields = ['user', 'id', 'date', 'cart_item']
-
-#     def get_cart_item(self, obj):
-#         cart_item = CartItem.objects.filter(cart=obj.id)
-#         return CartItemSerializer(cart_item, many=True).data
+    def get_item_price(self, obj):
+        return obj.item.price*obj.quantity
 
 
-# class CartItemCreateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CartItem
-#         fields = ['item', 'quantity']
+class CartSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    cart_item = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Cart
+        fields = ['user', 'id', 'date', 'cart_item']
+
+    def get_cart_item(self, obj):
+        cart_item = CartItem.objects.filter(cart=obj.id)
+        return CartItemSerializer(cart_item, many=True).data
 
 
-# class CartUpdateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CartItem
-#         fields = ['quantity']
+class CartItemCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ['item', 'quantity']
+
+
+class CartUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ['quantity']
