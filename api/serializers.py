@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Profile, CartItem, Cart,Restaurant
+from .models import Profile, CartItem, Cart,Restaurant,Menu
 from datetime import date
 
 
@@ -81,3 +81,25 @@ class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = ['name', 'location', 'description', 'image','id']
+
+class MenuSerializer(serializers.ModelSerializer):
+    discounted_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Menu
+        fields = ['id','name', 'original_price', 'discount','discounted_price','description','image','available_qty','restaurant']
+
+    def get_discounted_price(self, obj):
+        return obj.original_price*((100-obj.discount)/100)
+
+class RestaurantDetailSerializer(serializers.ModelSerializer):
+    menu = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Restaurant
+        fields = ['name', 'location', 'description', 'image','id','menu']
+
+    def get_menu(self,obj):
+        menu = Menu.objects.filter(restaurant=obj.id)
+        return MenuSerializer(menu, many=True).data
+
