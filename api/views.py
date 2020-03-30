@@ -67,9 +67,11 @@ class Checkout(APIView):
 class RestaurantList(ListAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    permission_classes = [IsAuthenticated]
 
 class RestaurantDetail(RetrieveAPIView):
 	queryset = Restaurant.objects.all()
 	serializer_class = RestaurantDetailSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'restaurant_id'
+    permission_classes = [IsAuthenticated]
