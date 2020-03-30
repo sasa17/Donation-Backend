@@ -31,6 +31,8 @@ urlpatterns = [
     path('cart/<int:cartitem_id>/update/', views.UpdateCart.as_view(), name="update-cartitem"),
     path('cart/<int:cartitem_id>/delete/', views.DeleteCartItem.as_view(), name="delete-cartitem"),
     path('checkout/', views.Checkout.as_view(), name="checkout"),
+    path('restaurant/', views.RestaurantList.as_view(), name="restaurant-list"),
+    path('restaurant/<int:restaurant_id>/', views.RestaurantDetail.as_view(), name="restaurant-detail"),
 ]
 
 # if settings.DEBUG:
