@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-# from .models import Cart, CartItem
+from .models import Profile
 # from datetime import date
 
 

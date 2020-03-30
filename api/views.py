@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, CreateAPIView
 # CartSerializer, Cart_ItemSerializer
-from .serializers import UserCreateSerializer, ProfileSerializer,
+from .serializers import UserCreateSerializer, ProfileSerializer
 # from .models import Cart_Item, Cart
 
 
