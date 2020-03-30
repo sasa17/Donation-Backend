@@ -3,8 +3,8 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView,
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 
-from .serializers import UserCreateSerializer, CartSerializer, CartItemCreateSerializer, ProfileSerializer,CartItemSerializer,CartUpdateSerializer
-from .models import CartItem, Cart
+from .serializers import UserCreateSerializer, CartSerializer, CartItemCreateSerializer, ProfileSerializer,CartItemSerializer,CartUpdateSerializer,RestaurantSerializer
+from .models import CartItem, Cart, Restaurant
 from .permissions import IsCartOwner
 
 from rest_framework.response import Response
@@ -62,3 +62,8 @@ class Checkout(APIView):
         cart.active = False
         cart.save()
         return Response(CartSerializer(cart).data)
+
+class RestaurantList(ListAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializer
+
