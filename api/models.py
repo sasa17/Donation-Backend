@@ -15,6 +15,9 @@ class Restaurant(models.Model):
     location = models.CharField(max_length=250)
     description = models.TextField()
     image = models.ImageField()
+   
+    def __str__(self):
+        return str(self.name)
 
 class Menu(models.Model):
     name = models.CharField(max_length=250)
@@ -25,6 +28,9 @@ class Menu(models.Model):
     available_qty = models.PositiveIntegerField()
     restaurant = models.ForeignKey(
         Restaurant, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return str(self.name)
 
 
 class CartItem(models.Model):
