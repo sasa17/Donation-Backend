@@ -7,17 +7,17 @@ from datetime import date
 
 class Donation(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE)
+        User, default=None, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=3)
     date = models.DateField(default=date.today)
-    active = models.BooleanField() 
+    active = models.NullBooleanField() 
 
     def __str__(self):
         return "%s: %s" % (self.user.username, str(self.amount))
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    points = models.PositiveIntegerField(default=0)
+    points = models.PositiveIntegerField(default=None)
 
     def __str__(self):
         return str(self.user)

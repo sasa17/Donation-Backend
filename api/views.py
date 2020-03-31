@@ -4,7 +4,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView,
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 
-from .serializers import UserCreateSerializer, DonationSerializer, ProfileSerializer,RestaurantSerializer,RestaurantDetailSerializer,DonationDetailSerializer
+from .serializers import UserCreateSerializer, DonationSerializer, ProfileSerializer,RestaurantSerializer,RestaurantDetailSerializer
 from .models import Donation, Restaurant
 from .permissions import IsCartOwner
 
@@ -23,28 +23,11 @@ class ProfileDetails(RetrieveAPIView):
     def get_object(self):
         return self.request.user.profile
 
-class DonationDetails(RetrieveAPIView):
-    serializer_class = DonationDetailSerializer
-
-    def get_object(self):
-        donation,created = Donation.objects.get_or_create(user=self.request.user, active=True)
-        return donation
-
-
 class DonationItem(CreateAPIView):
     serializer_class = DonationSerializer
-
-    def create(self, request, *args, **kwargs):
-        serializer = DonationSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        new_data = self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(DonationDetailSerializer(new_data).data, status=status.HTTP_201_CREATED, headers=headers)
-
     def perform_create(self, serializer):
-        donation,created = Donation.objects.get_or_create(user=self.request.user, active=True)
-        return serializer.save(donation = donation)
-
+        return serializer.save(user=self.request.user, active=True)
+        
 class Checkout(APIView):
     serializer_class = DonationSerializer
     def get(self, request):

@@ -45,12 +45,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class DonationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Donation
-        fields = ['amount']
-
-class DonationDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Donation
-        fields = ['amount','id','date','user']
+        fields = ['amount', 'user', 'active', 'id', 'date']
 
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
