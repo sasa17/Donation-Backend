@@ -1,11 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import date
 
 # Create your models here.
 
 
+class Donation(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=3)
+    date = models.DateField(default=date.today)
+    active = models.BooleanField() 
+
+    def __str__(self):
+        return "%s: %s" % (self.user.username, str(self.amount))
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    points = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return str(self.user)
@@ -33,25 +45,3 @@ class Menu(models.Model):
     
     def __str__(self):
         return str(self.name)
-
-
-
-class CartItem(models.Model):
-    menu_item = models.ForeignKey(
-        Menu, on_delete=models.CASCADE)
-    cart = models.ForeignKey(
-        Cart, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
-
-    def __str__(self):
-        return "%s: %s" % (self.menu_item.name, str(self.quantity))
-
-
-class Cart(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True)
-    date = models.DateField(auto_now_add=True)
-    active = models.BooleanField()
-
-    def __str__(self):
-        return self.user.username

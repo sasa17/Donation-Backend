@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Profile, CartItem, Cart,Restaurant,Menu
+from .models import Profile, Donation,Restaurant,Menu
 from datetime import date
 
 
@@ -32,52 +32,20 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    past_items = serializers.SerializerMethodField()
-
+    past_donations = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['username','first_name', 'last_name', 'email', 'phone', 'past_items']
+        fields = ['username','first_name', 'last_name', 'email', 'phone', 'past_donations', 'points']
 
-    def get_past_items(self, obj):
-        items = Cart.objects.filter(user=obj, date__lte=date.today())
-        return CartSerializer(items, many=True).data
+    def get_past_donations(self, obj):
+        amount = Donation.objects.filter(user=obj, date__lte=date.today())
+        return DonationSerializer(amount, many=True).data
 
 
-class CartItemSerializer(serializers.ModelSerializer):
-    menu_item = serializers.SlugRelatedField(slug_field='name', read_only=True)
-    item_price = serializers.SerializerMethodField()
-
+class DonationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CartItem
-        fields = ['menu_item', 'quantity','item_price','id']
-
-    def get_item_price(self, obj):
-        return obj.item.price*obj.quantity
-
-
-class CartSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    cart_item = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Cart
-        fields = ['user', 'id', 'date', 'cart_item']
-
-    def get_cart_item(self, obj):
-        cart_item = CartItem.objects.filter(cart=obj.id)
-        return CartItemSerializer(cart_item, many=True).data
-
-
-class CartItemCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ['item', 'quantity']
-
-
-class CartUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ['quantity']
+        model = Donation
+        fields = ['amount','points','id']
 
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
@@ -93,6 +61,7 @@ class MenuSerializer(serializers.ModelSerializer):
 
     def get_discounted_price(self, obj):
         return obj.original_price*((100-obj.discount)/100)
+    
 
 class RestaurantDetailSerializer(serializers.ModelSerializer):
     menu = serializers.SerializerMethodField()
