@@ -9,8 +9,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'first_name',
-                  'last_name', 'email', 'phone', 'password']
+        fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'password']
 
     def create(self, validated_data):
         username = validated_data['username']
@@ -29,16 +28,19 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["first_name", "last_name"]
+        fields = ['first_name', 'last_name']
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
     past_items = serializers.SerializerMethodField()
 
     class Meta:
-        model = Profile
-        fields = ['user']
+        model = User
+        fields = ['username','first_name', 'last_name', 'email', 'phone', 'past_items']
+
+    def get_past_items(self, obj):
+        items = Cart.objects.filter(user=obj, date__lte=date.today())
+        return CartSerializer(items, many=True).data
 
 
 class CartItemSerializer(serializers.ModelSerializer):

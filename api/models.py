@@ -39,6 +39,8 @@ class Menu(models.Model):
 class CartItem(models.Model):
     menu_item = models.ForeignKey(
         Menu, on_delete=models.CASCADE)
+    cart = models.ForeignKey(
+        Cart, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
@@ -48,8 +50,6 @@ class CartItem(models.Model):
 class Cart(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True)
-    cart_item = models.ForeignKey(
-        CartItem, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     active = models.BooleanField()
 
