@@ -21,7 +21,7 @@ class ProfileDetails(RetrieveAPIView):
     serializer_class = ProfileSerializer
 
     def get_object(self):
-        return self.request.user.profile
+        return self.request.user
 
 class DonationItem(CreateAPIView):
     serializer_class = DonationSerializer
