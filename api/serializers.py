@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Profile, Donation,Restaurant,Menu
+from .models import Profile, Donation,Restaurant,Menu, DonationBasket
 from datetime import date
 
 
@@ -74,4 +74,23 @@ class RestaurantDetailSerializer(serializers.ModelSerializer):
     def get_menu(self,obj):
         menu = Menu.objects.filter(restaurant=obj.id)
         return MenuSerializer(menu, many=True).data
+
+class DonationBasketSerializer(serializers.ModelSerializer):
+    amount_donated = serializers.SerializerMethodField()
+
+    class Meta:
+        model = DonationBasket
+        fields = ['restaurant', 'date', 'amount_donated','id']
+    
+ class DonationBasketItemSerializer(serializers.ModelSerializer):
+     item = serializers.SlugRelatedField(slug_field='name', read_only=True)
+     item_total = serializers.SerializerMethodField()
+
+      class Meta:
+          model = DonationBasketItem
+          fields = ['item', 'donation_basket', 'item_total']
+
+    def get_item_total(self, obj):
+        for items in obj.item:
+            return total += obj.item.total
 
