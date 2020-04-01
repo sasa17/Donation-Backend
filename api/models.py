@@ -50,8 +50,6 @@ class Menu(models.Model):
 
 class DonationBasket(models.Model):
     user = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    total_donation = models.ManyToManyField(Donation)
-    item = models.ForeignKey(Menu, on_delete=models.CASCADE, default=None)
     date = models.DateField(default=date.today)
     active = models.BooleanField()
 
@@ -59,7 +57,6 @@ class DonationBasket(models.Model):
         return "%s: %s" % (str(self.date), self.user.name)
 
 class DonationBasketItem(models.Model):
-    item = models.ForeignKey(Menu, on_delete=models.CASCADE, default=None)
     donationbasket = models.ForeignKey(
         DonationBasket, on_delete=models.CASCADE)
 

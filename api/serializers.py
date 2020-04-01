@@ -83,15 +83,9 @@ class RestaurantDetailSerializer(serializers.ModelSerializer):
         menu = Menu.objects.filter(restaurant=obj.id)
         return MenuSerializer(menu, many=True).data
 
-class DonationBasketSerializer(serializers.ModelSerializer):
-    amount_donated = serializers.SerializerMethodField()
 
-    class Meta:
-        model = DonationBasket
-        fields = ['restaurant', 'date', 'amount_donated','id']
-    
  class DonationBasketItemSerializer(serializers.ModelSerializer):
-     item = serializers.SlugRelatedField(slug_field='name', read_only=True)
+     item = MenuSerializer()
      item_total = serializers.SerializerMethodField()
 
       class Meta:
@@ -99,6 +93,32 @@ class DonationBasketSerializer(serializers.ModelSerializer):
           fields = ['item', 'donation_basket', 'item_total']
 
     def get_item_total(self, obj):
-        for items in obj.item:
-            return total += obj.item.total
+        for items in self.item:
+            return total += self.item.total
+
+class DonationBasketSerializer(serializers.ModelSerializer):
+    single_restaurant_total = DonationBasketItemSerializer()
+    total_donations = DonationSerializer()
+    restaurant_total = serializers.SerializerMethodField()
+    amount_donated = serializers.SerializerMethodField()
+    donationbasket_item = serializers.SerializerMethodField()
+
+    class Meta:
+        model = DonationBasket
+        fields = ['restaurant', 'date', 'amount_donated','id']
+
+    def get_donationbasket_item(self, obj):
+        donationbasket_item = DonationBasketItem.objects.filter(donationbasket=obj.id)
+        return DonationBasketItemSerializer(donationbasket_item, many=True).data
+    
+    def get_restaurant_total(self,obj):
+        for restaurant in restaurant_total:
+            return total += self.restaurant_total.item_total
+    
+    def get_total_donations(self, obj):
+        amount = Donation.objects.filter(date=date.today(), active=False)
+        return DonationSerializer(amount, many=True).data
+    
+    def get_amount_donated(self,obj):
+        return self.total_donations*(self.single_restaurant_total/self.restaurant_total)
 
