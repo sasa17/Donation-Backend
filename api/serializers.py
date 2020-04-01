@@ -39,7 +39,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['username','first_name', 'last_name', 'email', 'past_donations'] #, 'phone'
 
     def get_past_donations(self, obj):
-        amount = Donation.objects.filter(user=obj, date__lte=date.today())
+        amount = Donation.objects.filter(user=obj, date__lte=date.today(), active=False)
         return DonationSerializer(amount, many=True).data
 
 
