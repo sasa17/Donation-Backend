@@ -9,7 +9,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'password']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password'] #'phone']
 
     def create(self, validated_data):
         username = validated_data['username']
@@ -17,9 +17,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
         first_name = validated_data['first_name']
         last_name = validated_data['last_name']
         email = validated_data['email']
-        phone = validated_data['phone']
+        # phone = validated_data['phone']
         new_user = User(username=username, first_name=first_name,
-                        last_name=last_name, email=email, phone=phone)
+                        last_name=last_name, email=email) #phone=phone)
         new_user.set_password(password)
         new_user.save()
         return validated_data
@@ -33,12 +33,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     past_donations = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['username','first_name', 'last_name', 'email', 'phone', 'past_donations', 'points']
+        fields = ['username','first_name', 'last_name', 'email', 'past_donations'] #, 'phone'
 
     def get_past_donations(self, obj):
-        amount = Donation.objects.filter(user=obj, date__lte=date.today())
+        amount = Donation.objects.filter(user=obj, date__lte=date.today(), active=False)
         return DonationSerializer(amount, many=True).data
 
 

@@ -4,7 +4,6 @@ from datetime import date
 
 # Create your models here.
 
-
 class Donation(models.Model):
     user = models.ForeignKey(
         User, default=None, on_delete=models.CASCADE)
@@ -18,7 +17,8 @@ class Donation(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     points = models.PositiveIntegerField(default=None)
-    phone = models.PositiveIntegerField(default=None)
+    # phone = models.CharField(max_length=8)
+
 
     def __str__(self):
         return str(self.user)
