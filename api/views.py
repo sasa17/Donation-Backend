@@ -23,11 +23,21 @@ class ProfileDetails(RetrieveAPIView):
     def get_object(self):
         return self.request.user.profile
 
-class DonationItem(CreateAPIView):
-    serializer_class = DonationSerializer
-    def perform_create(self, serializer):
-        return serializer.save(user=self.request.user, active=True)
-        
+class DonationItem(APIView):
+
+    def post(self, request):
+        serializer = DonationSerializer(data=request.data)
+        donation = Donation.objects.filter(user=request.user, active=True).first()
+        if serializer.is_valid():
+            if Donation.objects.filter(user=request.user, active=True).exists():
+                donation.amount = request.data.get('amount')
+                new_data = DonationSerializer(donation)
+                donation.save()
+                return Response(new_data.data, status=status.HTTP_201_CREATED)
+            serializer.save(user=request.user, active=True)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class Checkout(APIView):
     serializer_class = DonationSerializer
     def get(self, request):

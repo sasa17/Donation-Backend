@@ -10,7 +10,7 @@ class Donation(models.Model):
         User, default=None, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=3)
     date = models.DateField(default=date.today)
-    active = models.NullBooleanField() 
+    active = models.BooleanField() 
 
     def __str__(self):
         return "%s: %s" % (self.user.username, str(self.amount))
@@ -18,6 +18,7 @@ class Donation(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     points = models.PositiveIntegerField(default=None)
+    phone = models.PositiveIntegerField(default=None)
 
     def __str__(self):
         return str(self.user)
