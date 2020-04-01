@@ -29,6 +29,7 @@ urlpatterns = [
     path('donation/', views.DonationItem.as_view(), name="donation"),
     path('checkout/', views.Checkout.as_view(), name="checkout"),
     path('restaurant/', views.RestaurantList.as_view(), name="restaurant-list"),
+    path('menu/<int:menu_id>/', views.UpdateMenu.as_view(), name="update-menu-item"),
     path('restaurant/<int:restaurant_id>/', views.RestaurantDetail.as_view(), name="restaurant-detail"),
 ]
 

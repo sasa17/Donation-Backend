@@ -55,14 +55,22 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
 class MenuSerializer(serializers.ModelSerializer):
     discounted_price = serializers.SerializerMethodField()
+    total = serializers.SerializerMethodField()
 
     class Meta:
         model = Menu
-        fields = ['id','name', 'original_price', 'discount','discounted_price','description','image','available_qty','restaurant']
+        fields = ['id','name', 'original_price', 'discount','discounted_price','description','image','available_qty','total','restaurant']
 
     def get_discounted_price(self, obj):
         return obj.original_price*((100-obj.discount)/100)
     
+    def get_total(self, obj):
+        return (obj.original_price*((100-obj.discount)/100))*obj.available_qty
+    
+class MenuUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Menu
+        fields = ['available_qty']
 
 class RestaurantDetailSerializer(serializers.ModelSerializer):
     menu = serializers.SerializerMethodField()
