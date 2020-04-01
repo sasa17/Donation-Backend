@@ -4,8 +4,8 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView,
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 
-from .serializers import UserCreateSerializer, DonationSerializer, ProfileSerializer,RestaurantSerializer,RestaurantDetailSerializer
-from .models import Donation, Restaurant
+from .serializers import UserCreateSerializer, DonationSerializer, ProfileSerializer,RestaurantSerializer,RestaurantDetailSerializer,MenuUpdateSerializer
+from .models import Donation, Restaurant,Menu
 from .permissions import IsCartOwner
 
 from rest_framework.response import Response
@@ -22,6 +22,13 @@ class ProfileDetails(RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+class UpdateMenu(RetrieveUpdateAPIView):
+    serializer_class = MenuUpdateSerializer
+    queryset = Menu.objects.all()
+    lookup_field = 'id'
+    lookup_url_kwarg = 'menu_id'
+    permission_classes = [IsAuthenticated]
 
 class DonationItem(APIView):
 
