@@ -55,10 +55,3 @@ class DonationBasket(models.Model):
 
     def __str__(self):
         return "%s: %s" % (str(self.date), self.user.name)
-
-class DonationBasketItem(models.Model):
-    donationbasket = models.ForeignKey(
-        DonationBasket, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return "%s: %s" % (str(self.item.restaurant.name), self.item.name)
