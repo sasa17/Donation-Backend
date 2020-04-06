@@ -44,18 +44,17 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class DonationSerializer(serializers.ModelSerializer):
-    total = serializers.SerializerMethodField()
+
     class Meta:
         model = Donation
         fields = ['amount', 'user', 'active', 'id', 'date']
-    def get_total(self, obj):
-        for amount in self:
-            return total + obj.amount
 
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = ['name', 'location', 'description', 'image','id']
+
+
 
 class MenuSerializer(serializers.ModelSerializer):
     discounted_price = serializers.SerializerMethodField()
@@ -70,6 +69,11 @@ class MenuSerializer(serializers.ModelSerializer):
     
     def get_total(self, obj):
         return (obj.original_price*((100-obj.discount)/100))*obj.available_qty
+
+class MenuAddSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Menu
+        fields = ['id','name', 'original_price', 'discount','description','image','available_qty']
     
 class MenuUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -87,6 +91,11 @@ class RestaurantDetailSerializer(serializers.ModelSerializer):
         menu = Menu.objects.filter(restaurant=obj.id)
         return MenuSerializer(menu, many=True).data
 
+class DonationBasketAddSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DonationBasket
+        fields = []
+
 class DonationBasketSerializer(serializers.ModelSerializer):
     total_donations = DonationSerializer()
     restaurant_total = serializers.SerializerMethodField()
@@ -96,15 +105,17 @@ class DonationBasketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DonationBasket
-        fields = ['restaurant', 'date', 'item_total', 'amount_donated','id']
+        fields = ['restaurant', 'date', 'single_restaurant_total', 'amount_donated','id']
 
-    def get_item_total(self, obj):
+    def get_single_restaurant_total(self, obj):
         for items in self.item:
-            return item_total + self.item.total
+            single_restaurant_total += self.item.total
+            return single_restaurant_total
     
     def get_restaurant_total(self,obj):
         for restaurant in single_restaurant_total:
-            return restaurant_total + self.single_restaurant_total.total
+            restaurant_total += self.single_restaurant_total.total
+            return restaurant_total
     
     def get_total_donations(self, obj):
         total = Donation.objects.filter(date=date.today(), active=False)

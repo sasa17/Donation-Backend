@@ -31,10 +31,12 @@ urlpatterns = [
     path('restaurant/', views.RestaurantList.as_view(), name="restaurant-list"),
     path('menu/<int:menu_id>/', views.UpdateMenu.as_view(), name="update-menu-item"),
     path('restaurant/<int:restaurant_id>/', views.RestaurantDetail.as_view(), name="restaurant-detail"),
+    path('donationbasket/',views.DonationBasketAdd.as_view(), name="add-basket"),
+    path('menu/', views.MenuAdd.as_view(), name="add-menu-item"),
 ]
 
-# if settings.DEBUG:
-#     urlpatterns += static(settings.MEDIA_URL,
-#                           document_root=settings.MEDIA_ROOT)
-#     urlpatterns += static(settings.STATIC_URL,
-#                           document_root=settings.STATIC_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
