@@ -44,14 +44,10 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class DonationSerializer(serializers.ModelSerializer):
-    total = serializers.SerializerMethodField()
+
     class Meta:
         model = Donation
         fields = ['amount', 'user', 'active', 'id', 'date']
-    def get_total(self, obj):
-        for amount in self:
-            total += obj.amount
-            return total
 
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:

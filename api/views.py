@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, CreateAPIView,RetrieveUpdateAPIView,DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
+from datetime import date
 
 from .serializers import UserCreateSerializer, DonationSerializer, ProfileSerializer,RestaurantSerializer,RestaurantDetailSerializer,MenuUpdateSerializer,DonationBasketAddSerializer,DonationBasketSerializer,MenuAddSerializer
 from .models import Donation, Restaurant,Menu,DonationBasket
@@ -42,6 +43,8 @@ class DonationBasketAdd(CreateAPIView):
             single_restaurant_amount += item.total
         return serializer.save(single_restaurant_total = single_restaurant_amount,restaurant=restaurant)
 
+
+
 class MenuAdd(CreateAPIView):
     serializer_class = MenuAddSerializer
 
@@ -74,6 +77,23 @@ class DonationItem(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class DonationBasketView(APIView):
+
+    def get(self, request):
+        restaurants = Restaurant.objects.all()
+        donation_basket_total = 0
+        donation_total = 0
+        all_donations = Donation.objects.filter(date=date.today(), active=False)
+        for donation in all_donations:
+            donation_total+=donation.amount
+        for restaurant in restaurants:
+            donationbasket=DonationBasket.objects.get(restaurant=restaurant,date=date.today())
+            donation_basket_total+=donationbasket.single_restaurant_total
+        for restaurant in restaurants:
+            donation_basket = DonationBasket.objects.get(date=date.today(),restaurant=restaurant)
+            donation_basket.total_donation_recieved = donation_total* (donation_basket.single_restaurant_total/donation_basket_total)
+            donation_basket.save()
+
 class Checkout(APIView):
     serializer_class = DonationSerializer
     def get(self, request):
@@ -91,6 +111,5 @@ class RestaurantDetail(RetrieveAPIView):
 	serializer_class = RestaurantDetailSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'restaurant_id'
-	permission_classes = [IsAuthenticated]
 
 
