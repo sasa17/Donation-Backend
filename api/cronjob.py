@@ -1,5 +1,5 @@
-from .models import Donation, DonationBasket, Restaurant
-import date from datetime
+from .models import Donation, DonationBasket, Restaurant,Menu
+from datetime import date
 
 def get_total_donations():
     restaurants = Restaurant.objects.all()
@@ -16,6 +16,12 @@ def get_total_donations():
         donation_basket.total_donation_recieved = donation_total* (donation_basket.single_restaurant_total/donation_basket_total)
         donation_basket.save()
 
+def reset_menu_quantity():
+    menu_items = Menu.objects.all()
+    for item in menu_items:
+        item.available_qty = 0
+        item.total = 0
+        item.save()
 
 
         

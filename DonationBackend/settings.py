@@ -104,8 +104,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 CRONJOBS = [
-    ('1 * * * *', 'api.cronjob.get_total_donations')
+    ('59 23 * * *', 'api.cronjob.get_total_donations'),
+    ('59 23 * * *', 'api.cronjob.reset_menu_quantity')
 ]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

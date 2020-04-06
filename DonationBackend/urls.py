@@ -33,7 +33,6 @@ urlpatterns = [
     path('restaurant/<int:restaurant_id>/', views.RestaurantDetail.as_view(), name="restaurant-detail"),
     path('donationbasket/',views.DonationBasketAdd.as_view(), name="add-basket"),
     path('menu/', views.MenuAdd.as_view(), name="add-menu-item"),
-    path('donationbasket/detail/',views.DonationBasketView.as_view(),name="basket-detail")
 ]
 
 if settings.DEBUG:

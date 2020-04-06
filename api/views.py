@@ -43,8 +43,6 @@ class DonationBasketAdd(CreateAPIView):
             single_restaurant_amount += item.total
         return serializer.save(single_restaurant_total = single_restaurant_amount,restaurant=restaurant)
 
-
-
 class MenuAdd(CreateAPIView):
     serializer_class = MenuAddSerializer
 
@@ -76,23 +74,6 @@ class DonationItem(APIView):
             serializer.save(user=request.user, active=True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class DonationBasketView(APIView):
-
-    def get(self, request):
-        restaurants = Restaurant.objects.all()
-        donation_basket_total = 0
-        donation_total = 0
-        all_donations = Donation.objects.filter(date=date.today(), active=False)
-        for donation in all_donations:
-            donation_total+=donation.amount
-        for restaurant in restaurants:
-            donationbasket=DonationBasket.objects.get(restaurant=restaurant,date=date.today())
-            donation_basket_total+=donationbasket.single_restaurant_total
-        for restaurant in restaurants:
-            donation_basket = DonationBasket.objects.get(date=date.today(),restaurant=restaurant)
-            donation_basket.total_donation_recieved = donation_total* (donation_basket.single_restaurant_total/donation_basket_total)
-            donation_basket.save()
 
 class Checkout(APIView):
     serializer_class = DonationSerializer
