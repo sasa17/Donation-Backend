@@ -32,6 +32,7 @@ urlpatterns = [
     path('menu/<int:menu_id>/', views.UpdateMenu.as_view(), name="update-menu-item"),
     path('restaurant/<int:restaurant_id>/', views.RestaurantDetail.as_view(), name="restaurant-detail"),
     path('donationbasket/',views.DonationBasketAdd.as_view(), name="add-basket"),
+    path('donationbasket/<int:donationbasket_id>/',views.DonationBasketDetail.as_view(),name="basket-detail"),
     path('menu/', views.MenuAdd.as_view(), name="add-menu-item"),
 ]
 

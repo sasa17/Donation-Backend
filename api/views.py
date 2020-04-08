@@ -21,9 +21,11 @@ class UserCreateAPIView(CreateAPIView):
 
 class ProfileDetails(RetrieveAPIView):
     serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.request.user
+    
 
 class UpdateMenu(RetrieveUpdateAPIView):
     serializer_class = MenuUpdateSerializer
@@ -57,8 +59,8 @@ class MenuAdd(CreateAPIView):
 class DonationBasketDetail(RetrieveAPIView):
     serializer_class = DonationBasketSerializer
     queryset = DonationBasket.objects.all()
-    lookup_field = 'restaurant'
-    lookup_url_kwarg = 'restaurant_id'
+    lookup_field = 'id'
+    lookup_url_kwarg = 'donationbasket_id'
     permission_classes = [IsAuthenticated]
 
 class DonationItem(APIView):
