@@ -45,8 +45,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 class RestaurantProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = User
-        fields = ['username','first_name', 'last_name', 'email']
+        model = Restaurant
+        fields = ['name','location', 'description', 'image','id']
 
 
 class DonationSerializer(serializers.ModelSerializer):
@@ -112,30 +112,8 @@ class DonationBasketAddSerializer(serializers.ModelSerializer):
         fields = []
 
 class DonationBasketSerializer(serializers.ModelSerializer):
-    total_donations = DonationSerializer()
-    restaurant_total = serializers.SerializerMethodField()
-    amount_donated = serializers.SerializerMethodField()
-    item = MenuSerializer()
-    single_restaurant_total = serializers.SerializerMethodField()
-
     class Meta:
         model = DonationBasket
-        fields = ['item','restaurant', 'date', 'single_restaurant_total', 'amount_donated','id','restaurant_total','total_donations']
+        fields = ['restaurant', 'date', 'single_restaurant_total', 'total_donation_recieved','id']
 
-    def get_single_restaurant_total(self, obj):
-        for items in self.item:
-            single_restaurant_total += self.item.total
-            return single_restaurant_total
-    
-    def get_restaurant_total(self,obj):
-        for restaurant in single_restaurant_total:
-            restaurant_total += self.single_restaurant_total.total
-            return restaurant_total
-    
-    def get_total_donations(self, obj):
-        total = Donation.objects.filter(date=date.today(), active=False)
-        return DonationSerializer(total, many=True).data
-    
-    def get_amount_donated(self,obj):
-        return self.total_donations*(self.single_restaurant_total/self.restaurant_total)
 
