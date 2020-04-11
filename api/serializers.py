@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Profile, Donation,Restaurant,Menu, DonationBasket
+from .models import Profile, Donation,Restaurant,Menu, DonationBasket, Checkout
 from datetime import date
 
 
@@ -42,6 +42,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         amount = Donation.objects.filter(user=obj, date__lte=date.today(), active=False)
         return DonationSerializer(amount, many=True).data
 
+class RestaurantProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['username','first_name', 'last_name', 'email']
+
 
 class DonationSerializer(serializers.ModelSerializer):
 
@@ -50,9 +56,18 @@ class DonationSerializer(serializers.ModelSerializer):
         fields = ['amount', 'user', 'active', 'id', 'date']
 
 class RestaurantSerializer(serializers.ModelSerializer):
+    menu_total = serializers.SerializerMethodField()
+
     class Meta:
         model = Restaurant
-        fields = ['name', 'location', 'description', 'image','id']
+        fields = ['name', 'location', 'description', 'image','id','menu_total']
+    
+    def get_menu_total(self,obj):
+        menu_total = 0
+        menu_items = Menu.objects.filter(restaurant=obj.id)
+        for item in menu_items:
+            menu_total+=item.total
+        return menu_total
 
 
 
@@ -105,7 +120,7 @@ class DonationBasketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DonationBasket
-        fields = ['restaurant', 'date', 'single_restaurant_total', 'amount_donated','id']
+        fields = ['item','restaurant', 'date', 'single_restaurant_total', 'amount_donated','id','restaurant_total','total_donations']
 
     def get_single_restaurant_total(self, obj):
         for items in self.item:
@@ -124,3 +139,13 @@ class DonationBasketSerializer(serializers.ModelSerializer):
     def get_amount_donated(self,obj):
         return self.total_donations*(self.single_restaurant_total/self.restaurant_total)
 
+class CheckoutSerializer(serializers.ModelSerializer):
+    amount = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Checkout
+        fields = ['amount', 'date', 'id']
+
+    def get_amount(self, obj):
+        amount = Donation.objects.filter(date=date.today(), active=False)
+        return CheckoutSerializer(amount, many=True).data

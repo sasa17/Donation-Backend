@@ -62,3 +62,14 @@ class DonationBasket(models.Model):
 @receiver(pre_save, sender=Menu)
 def get_total(instance, *args, **kwargs):
     instance.total = (instance.original_price*((100-instance.discount)/100))* instance.available_qty
+
+class Checkout(models.Model):
+    amount = models.ForeignKey(Donation, on_delete=models.CASCADE)
+    date = models.DateField(default=date.today)
+
+    def __str__(self):
+        return "%s: %s" % (str(self.date), str(self.donation.amount))
+
+@receiver(pre_save, sender=Donation)
+def get_total(instance, *args, **kwargs):
+    instance.total += instance.amount

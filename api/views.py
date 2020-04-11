@@ -1,3 +1,4 @@
+import requests
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, CreateAPIView,RetrieveUpdateAPIView,DestroyAPIView
@@ -5,8 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from datetime import date
 
-from .serializers import UserCreateSerializer, DonationSerializer, ProfileSerializer,RestaurantSerializer,RestaurantDetailSerializer,MenuUpdateSerializer,DonationBasketAddSerializer,DonationBasketSerializer,MenuAddSerializer
-from .models import Donation, Restaurant,Menu,DonationBasket
+from .serializers import UserCreateSerializer, DonationSerializer, ProfileSerializer,RestaurantSerializer,RestaurantDetailSerializer,MenuUpdateSerializer,DonationBasketAddSerializer,DonationBasketSerializer,MenuAddSerializer, CheckoutSerializer
+from .models import Donation, Restaurant,Menu,DonationBasket, Checkout
 from .permissions import IsCartOwner
 
 from rest_framework.response import Response
@@ -21,9 +22,11 @@ class UserCreateAPIView(CreateAPIView):
 
 class ProfileDetails(RetrieveAPIView):
     serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.request.user
+    
 
 class UpdateMenu(RetrieveUpdateAPIView):
     serializer_class = MenuUpdateSerializer
@@ -57,8 +60,8 @@ class MenuAdd(CreateAPIView):
 class DonationBasketDetail(RetrieveAPIView):
     serializer_class = DonationBasketSerializer
     queryset = DonationBasket.objects.all()
-    lookup_field = 'restaurant'
-    lookup_url_kwarg = 'restaurant_id'
+    lookup_field = 'id'
+    lookup_url_kwarg = 'donationbasket_id'
     permission_classes = [IsAuthenticated]
 
 class DonationItem(APIView):
@@ -76,12 +79,34 @@ class DonationItem(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class Checkout(APIView):
-    serializer_class = DonationSerializer
+    serializer_class = CheckoutSerializer
+    checkout = Checkout.objects.all()
+
     def get(self, request):
         donation = Donation.objects.get(user=request.user, active=True)
         donation.active = False
         donation.save()
         return Response(DonationSerializer(donation).data)
+
+    def payment():
+        try:
+            payment = api.payments.request(
+                source={
+                    # 'token': 'tok_...'.
+                    # 'billing_address': {},
+                    # 'phone': {}
+                },
+                amount=1000,                                     # fils
+                currency=sdk.Currency.KWD,                      # or 'kwd'
+                reference='pay_ref'
+            )
+            return(payment.id)
+        except sdk.errors.CheckoutSdkError as e:
+            return('{0.http_status} {0.error_type} {0.elapsed} {0.request_id}'.format(e))
+
+        url = 'https://api.sandbox.checkout.com/payments/<int:payment_id>'
+        response = requests.get(url)
+        return(response.json())
 
 class RestaurantList(ListAPIView):
     queryset = Restaurant.objects.all()
