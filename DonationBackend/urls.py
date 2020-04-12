@@ -35,6 +35,7 @@ urlpatterns = [
     path('donationbasket/add/',views.DonationBasketAdd.as_view(), name="add-basket"),
     path('donationbasket/',views.DonationBasketList.as_view(),name="basket-detail"),
     path('menu/', views.MenuAdd.as_view(), name="add-menu-item"),
+    path('donation/list/', views.DonationList.as_view(), name="donation-list"),
 ]
 
 if settings.DEBUG:

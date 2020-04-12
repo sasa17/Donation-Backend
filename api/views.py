@@ -102,4 +102,11 @@ class RestaurantDetail(RetrieveAPIView):
 	lookup_field = 'id'
 	lookup_url_kwarg = 'restaurant_id'
 
+class DonationList(ListAPIView):
+    serializer_class = DonationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Donation.objects.filter(date= date.today(),active = False)
+
 
