@@ -115,8 +115,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 CRONJOBS = [
-    ('0 0 * * *', 'api.cronjob.get_total_donations'),
-    ('0 0 * * *', 'api.cronjob.reset_menu_quantity')
+    ('* */23 * * *', 'api.cronjob.get_total_donations'),
+    ('* */23 * * *', 'api.cronjob.reset_menu_quantity')
 ]
 
 

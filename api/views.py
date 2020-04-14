@@ -104,7 +104,6 @@ class RestaurantDetail(RetrieveAPIView):
 
 class DonationList(ListAPIView):
     serializer_class = DonationSerializer
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Donation.objects.filter(date= date.today(),active = False)
