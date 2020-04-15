@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '14)l+n5nbpd8!a*x_cjv6$g=mcpx1jzxa64s!4nq=mq-k73kyb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["134.122.72.171"]
 
 
 # Application definition
@@ -81,8 +81,12 @@ WSGI_APPLICATION = 'DonationBackend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django',
+        'USER': 'django',
+        'PASSWORD': '24f5d481787b2a36dae76f150506af69',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
