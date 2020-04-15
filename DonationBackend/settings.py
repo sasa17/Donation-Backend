@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'DonationBackend.wsgi.application'
+WSGI_APPLICATION = 'Donation-Backend.wsgi.application'
 
 
 # Database
