@@ -1,4 +1,4 @@
-#!/home/narikokaida/Capstone/DonationBackend/DonationBackend/donation_env/bin/python3
+#!/home/narikokaida/Capstone/Donation-Backend/Donation-Backend/donation_env/bin/python3
 from django.core import management
 
 if __name__ == "__main__":

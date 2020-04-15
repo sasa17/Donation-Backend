@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/narikokaida/Capstone/DonationBackend/DonationBackend/donation_env"
+VIRTUAL_ENV="/home/narikokaida/Capstone/Donation-Backend/Donation-Backend/donation_env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
