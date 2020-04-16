@@ -40,7 +40,6 @@ class Menu(models.Model):
     original_price = models.DecimalField(max_digits=10, decimal_places=3)
     discount = models.DecimalField(default=0,max_digits=10, decimal_places=3)
     description = models.TextField()
-    image = models.ImageField()
     available_qty = models.PositiveIntegerField()
     restaurant = models.ForeignKey(
         Restaurant, on_delete=models.CASCADE)
