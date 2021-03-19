@@ -6,7 +6,7 @@ django-cors-headers==3.2.1
 django-cron==0.5.1
 django-crontab==0.7.1
 django-filter==2.0.0
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 djangorestframework-simplejwt==4.3.0
 gunicorn==20.0.4
 isort==4.3.21
